@@ -23,6 +23,8 @@ spec:
         ExternalDomain: auth.meneerak.nl
         ExternalPort: 443
         ExternalSecure: true
+        TLS:
+          Enabled: false
         Database:
           Postgres:
             Host: postgresql-rw.zitadel.svc.cluster.local
