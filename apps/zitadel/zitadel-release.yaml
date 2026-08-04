@@ -5,8 +5,6 @@ metadata:
   namespace: zitadel
 spec:
   interval: 1h
-  dependsOn:
-    - name: postgresql
   chart:
     spec:
       chart: zitadel
@@ -24,7 +22,7 @@ spec:
         ExternalSecure: true
         Database:
           Postgres:
-            Host: postgresql.zitadel.svc.cluster.local
+            Host: postgresql-rw.zitadel.svc.cluster.local
             Port: 5432
             Database: zitadel
             User:

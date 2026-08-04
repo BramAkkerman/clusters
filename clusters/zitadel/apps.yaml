@@ -9,6 +9,9 @@ spec:
   prune: true
   dependsOn:
     - name: cert-manager-config
+    - name: cnpg-operator
   sourceRef:
     kind: GitRepository
     name: flux-system
+  wait: true
+  timeout: 5m0s
