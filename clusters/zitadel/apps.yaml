@@ -8,7 +8,7 @@ spec:
   path: ./apps/zitadel
   prune: true
   dependsOn:
-    - name: infrastructure
+    - name: cert-manager-config
   sourceRef:
     kind: GitRepository
     name: flux-system
