@@ -13,6 +13,9 @@ spec:
         kind: HelmRepository
         name: zitadel
         namespace: flux-system
+  install:
+    remediation:
+      retries: 3
   values:
     zitadel:
       masterkeySecretName: zitadel-masterkey   # created manually, see below
@@ -33,6 +36,17 @@ spec:
               Username: postgres
               SSL:
                 Mode: disable
+    env:
+      - name: ZITADEL_DATABASE_POSTGRES_USER_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: postgresql-auth
+            key: password
+      - name: ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: postgresql-superuser
+            key: password
     ingress:
       enabled: true
       className: traefik
