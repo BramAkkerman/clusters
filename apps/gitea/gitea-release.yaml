@@ -42,7 +42,7 @@ spec:
               key: password
     ingress:
       enabled: true
-      className: traefik
+      className: traefik-traefik
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
