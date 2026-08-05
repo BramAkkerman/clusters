@@ -23,14 +23,14 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./
+  path: ./apps/dawarich
   prune: true
   dependsOn:
     - name: cert-manager-config
     - name: cnpg-operator
   sourceRef:
     kind: GitRepository
-    name: dawarich
+    name: gitea-apps
     namespace: flux-system
   wait: true
   timeout: 5m0s

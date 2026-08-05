@@ -1,12 +1,12 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: dawarich
+  name: gitea-apps
   namespace: flux-system
 spec:
   interval: 1m0s
-  url: ssh://git@git.meneerak.nl/flux/dawarich.git
+  url: ssh://git@git.meneerak.nl/flux/apps.git
   ref:
     branch: main
   secretRef:
-    name: dawarich-gitea-auth   # created manually, see below
+    name: gitea-apps-auth   # created manually, see below
