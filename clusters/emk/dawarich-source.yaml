@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m0s
-  url: https://git.meneerak.nl/flux/dawarich.git
+  url: ssh://git@git.meneerak.nl/flux/dawarich.git
   ref:
     branch: main
   secretRef:
