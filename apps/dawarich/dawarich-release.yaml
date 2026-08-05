@@ -32,6 +32,8 @@ spec:
       existingSecret: dawarich-redis   # created manually, see below
       persistentVolume:
         enabled: false   # just a cache/job queue - losing it on restart is fine, saves another volume against quota
+      config:
+        min-replicas-to-write: 0   # single replica, no HA - default of 1 blocks all writes with NOREPLICAS
     persistence:
       watched:
         enabled: false   # falls back to emptyDir - saves a volume against the account's OpenStack quota
