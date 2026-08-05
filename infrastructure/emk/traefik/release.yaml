@@ -19,3 +19,11 @@ spec:
   values:
     service:
       type: LoadBalancer
+    ports:
+      web:
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
