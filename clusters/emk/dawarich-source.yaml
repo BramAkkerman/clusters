@@ -1,0 +1,12 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: dawarich
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  url: https://git.meneerak.nl/bram/dawarich.git
+  ref:
+    branch: main
+  secretRef:
+    name: dawarich-gitea-auth   # created manually, see below
