@@ -31,7 +31,7 @@ spec:
               Host: send.pidge.cyso.cloud:587
               User: braml+513b98df@pidge
             TLS: true
-            From: noreply@mail.meneerak.nl
+            From: noreply@meneerak.nl
           DomainPolicy:
             SMTPSenderAddressMatchesInstanceDomain: false
         Database:
