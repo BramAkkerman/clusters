@@ -26,3 +26,9 @@ spec:
           default: true
         exposedPort: 22
         protocol: TCP
+      wireguard:
+        port: 51820
+        expose:
+          default: true
+        exposedPort: 51820
+        protocol: UDP
