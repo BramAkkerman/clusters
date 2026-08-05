@@ -63,7 +63,7 @@ spec:
           secretKeyRef:
             name: zitadel-smtp
             key: password
-      - name: ZITADEL_DEFAULTINSTANCE_ORG_HUMAN_PASSWORD
+      - name: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD
         valueFrom:
           secretKeyRef:
             name: zitadel-admin
