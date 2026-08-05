@@ -1,0 +1,49 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dawarich
+  namespace: dawarich
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: dawarich
+      version: "2.x"
+      sourceRef:
+        kind: HelmRepository
+        name: dawarich
+        namespace: dawarich
+  values:
+    env:
+      applicationProtocol: "https"
+    keyBase:
+      existingSecret: dawarich-keybase   # created manually, see below
+    postgresql:
+      enabled: false
+      host: postgresql-rw.dawarich.svc.cluster.local
+      port: 5432
+      auth:
+        database: dawarich
+        username: dawarich
+        existingSecret: postgresql-auth   # created manually, see below
+    redis:
+      enabled: true
+      replicas: 1
+      existingSecret: dawarich-redis   # created manually, see below
+    dawarich:
+      hosts:
+        - timeline.meneerak.nl
+    ingress:
+      enabled: true
+      className: traefik-traefik
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+      hosts:
+        - host: timeline.meneerak.nl
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: dawarich-tls
+          hosts:
+            - timeline.meneerak.nl

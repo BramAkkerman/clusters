@@ -24,6 +24,9 @@ Cyso Cloud "Enterprise Managed Kubernetes" — Gardener-based (Shoot terminology
 - Gitea admin user: `bram`, credentials in `gitea-admin` secret (namespace `gitea`, manually created, not in git).
 - Gitea DB: CNPG, bootstrap-only (no superuser dance needed — unlike Zitadel, Gitea only needs its own DB user).
 - Gitea chart: bundled Bitnami postgres/valkey-cluster subcharts explicitly disabled (default ships a 3-node Valkey cluster — overkill for personal use); using Gitea's built-in in-memory cache/session instead.
+- Also hosts Dawarich (self-hosted location history / Google Timeline alternative) at `timeline.meneerak.nl`, migrated off `zitadel-vm` (was running there outside Kubernetes — Docker Compose, not managed by this repo at all). Chart: `Cogitri/charts` dawarich (`https://charts.cogitri.dev`) — community-maintained, explicitly bring-your-own-Postgres (no bundled Postgres dependency at all, unlike Gitea/Zitadel's charts which bundle one you have to disable). It does bundle a `redis-ha` subchart (aliased as `redis:` in values) defaulting to 3 replicas — same overkill pattern as Gitea's Valkey, knocked down to 1 via `redis.replicas: 1`.
+  - **PostGIS gotcha**: Dawarich requires the `postgis` Postgres extension. The chart's bundled-Postgres path auto-creates it via an init container, but that path is entirely skipped when bringing your own DB (which we always do) — CNPG's default Postgres image doesn't have PostGIS at all. Fixed with a dedicated image (`ghcr.io/cloudnative-pg/postgis`, pinned by digest, matching the `17.x` major version used elsewhere) plus `bootstrap.initdb.postInitTemplateSQL: [CREATE EXTENSION IF NOT EXISTS postgis;]` on the CNPG `Cluster` — runs against the template DB so it's present before the app database is even created from it.
+  - `env.applicationProtocol: "https"` set explicitly up front (chart defaults to `"http"`) — learned from the Zitadel/Gitea TLS mismatches earlier in this project not to leave that implicit behind a TLS-terminating ingress.
 
 ## Secrets (all "bring your own" — created manually via `kubectl create secret`, never committed)
 
@@ -33,10 +36,14 @@ Cyso Cloud "Enterprise Managed Kubernetes" — Gardener-based (Shoot terminology
 | `postgresql-superuser` | zitadel | zitadel-vm | username, password |
 | `zitadel-masterkey` | zitadel | zitadel-vm | masterkey |
 | `zitadel-smtp` | zitadel | zitadel-vm | user, password |
+| `zitadel-admin` | zitadel | zitadel-vm | password |
 | `postgresql-auth` | gitea | ak | username, password |
 | `gitea-admin` | gitea | ak | username, password |
+| `postgresql-auth` | dawarich | ak | username, password |
+| `dawarich-redis` | dawarich | ak | redis-password |
+| `dawarich-keybase` | dawarich | ak | value |
 
-Pattern used throughout: passwords are wired into HelmReleases via top-level `env:` + `secretKeyRef`, using each app's own env-var config override convention (`ZITADEL_<SECTION>_<KEY>` / Gitea's `GITEA__<section>__<KEY>` via `additionalConfigFromEnvs`) — never placed directly in `values:` blocks, which would land in a plaintext ConfigMap or Helm release secret.
+Pattern used throughout: passwords are wired into HelmReleases via top-level `env:` + `secretKeyRef`, using each app's own env-var config override convention (`ZITADEL_<SECTION>_<KEY>` / Gitea's `GITEA__<section>__<KEY>` via `additionalConfigFromEnvs`) — never placed directly in `values:` blocks, which would land in a plaintext ConfigMap or Helm release secret. Dawarich's chart wires secrets via plain `existingSecret` + fixed key names instead (`username`/`password` for Postgres, `redis-password`, `value` for the Rails key base) — same bring-your-own-secret philosophy, different chart-specific mechanism.
 
 ## Non-obvious gotchas hit along the way
 
