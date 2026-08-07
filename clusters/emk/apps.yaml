@@ -104,3 +104,21 @@ spec:
     namespace: flux-system
   wait: true
   timeout: 10m0s
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: media
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./apps/media
+  prune: true
+  dependsOn:
+    - name: cert-manager-config
+  sourceRef:
+    kind: GitRepository
+    name: gitea-apps
+    namespace: flux-system
+  wait: true
+  timeout: 10m0s
