@@ -14,6 +14,8 @@ spec:
         name: gitea
         namespace: gitea
   values:
+    strategy:
+      type: Recreate   # single ReadWriteOnce volume + local LevelDB queue lock - a RollingUpdate briefly runs old+new pods concurrently, and the new one can't acquire the queue's file lock while the old one still holds it ("unable to lock level db ... resource temporarily unavailable")
     resources:
       requests:
         cpu: 100m
