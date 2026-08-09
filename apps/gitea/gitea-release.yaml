@@ -14,6 +14,12 @@ spec:
         name: gitea
         namespace: gitea
   values:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        memory: 512Mi
     postgresql:
       enabled: false
     postgresql-ha:
