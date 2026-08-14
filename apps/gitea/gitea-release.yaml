@@ -14,6 +14,8 @@ spec:
         name: gitea
         namespace: gitea
   values:
+    image:
+      tag: "1.27.1"   # pinned explicitly, not left to the "12.x" chart range's own appVersion default - 1.27.0 (what we were actually running) is the last version vulnerable to CVE-2026-60004 (CVSS 9.8, RCE via a crafted hooks/post-index-change file landing in a temp bare clone's real .git/hooks during diffpatch; fixed in 1.27.1 by using a non-bare working-tree clone instead). Confirmed actively probed against this exact instance by multiple self-registered accounts.
     strategy:
       type: Recreate   # single ReadWriteOnce volume + local LevelDB queue lock - a RollingUpdate briefly runs old+new pods concurrently, and the new one can't acquire the queue's file lock while the old one still holds it ("unable to lock level db ... resource temporarily unavailable")
     resources:
@@ -42,6 +44,10 @@ spec:
           HOST: postgresql-rw.gitea.svc.cluster.local:5432
           NAME: gitea
           USER: gitea
+        service:
+          DISABLE_REGISTRATION: true   # was left at Gitea's own default (open) - this is exactly how 5 unauthorized accounts (pwn*/pwnd*/svc*/testpoc*) self-registered and probed CVE-2026-60004 over several days before this was caught. This is a personal single-tenant instance; new accounts should only ever be created by the admin.
+        git:
+          DISABLE_GIT_HOOKS: true   # defense-in-depth, independent of the CVE-2026-60004 fix above - removes repo-owner-editable server-side git hooks as an RCE vector entirely, not just the one specific bug that enabled it this time
       additionalConfigFromEnvs:
         - name: GITEA__database__PASSWD
           valueFrom:
