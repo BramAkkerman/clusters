@@ -17,6 +17,8 @@ spec:
   install:
     createNamespace: true
   values:
+    api:
+      insecure: true   # enables the actual /api/* routes on the existing internal "traefik" entrypoint (:8080) for homepage's widget - dashboard=true alone (chart default) doesn't create working API routes on its own. Never exposed externally: this entrypoint isn't in ports.* below, so it's absent from the LoadBalancer Service entirely - see dashboard-service.yaml for the separate ClusterIP-only path that actually reaches it.
     service:
       type: LoadBalancer
     ports:

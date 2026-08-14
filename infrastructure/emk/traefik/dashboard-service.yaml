@@ -1,0 +1,20 @@
+# Internal-only ClusterIP path to Traefik's dashboard/API (:8080), for
+# homepage's Traefik widget. Deliberately a separate Service from
+# traefik-traefik (the LoadBalancer) rather than adding this port to that
+# Service's own port list - keeps the insecure, unauthenticated API endpoint
+# structurally unreachable from outside the cluster, not just unrouted.
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-dashboard
+  namespace: traefik
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/instance: traefik-traefik-traefik
+    app.kubernetes.io/name: traefik
+  ports:
+    - name: traefik
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
