@@ -63,8 +63,9 @@ Cyso Cloud "Enterprise Managed Kubernetes" — Gardener-based (Shoot terminology
 | `immich-postgres-auth` | immich | ak | password |
 | `immich-s3-rclone-config` | immich | ak | rclone.conf (Cyso object storage, bucket `fotos`, read-only external library mount) |
 | `media-s3-rclone-config` | media | ak | rclone.conf (Cyso object storage, bucket `videos`, read-write library mount) |
-| `oauth2-proxy-zitadel` | media | ak | client-id, client-secret, cookie-secret (Zitadel app, shared across Radarr/Sonarr/Prowlarr/Bazarr) |
+| `oauth2-proxy-zitadel` | media | ak | client-id, client-secret, cookie-secret (Zitadel app, shared across Radarr/Sonarr/Prowlarr/Bazarr; moved to its own dedicated Zitadel project 2026-08-14, client-id/secret rotated, cookie-secret unchanged) |
 | `oauth2-proxy-zitadel` | filestash | ak | client-id, client-secret, cookie-secret (its **own** dedicated Zitadel app — deliberately not shared with media's) |
+| `oauth2-proxy-wireguard` | wireguard | ak | client-id, client-secret, cookie-secret (wg-easy's web UI gate, its own Zitadel app; moved into the same new dedicated project as media's app 2026-08-14, client-id/secret rotated, cookie-secret unchanged) |
 
 Pattern used throughout: passwords are wired into HelmReleases via top-level `env:` + `secretKeyRef`, using each app's own env-var config override convention (`ZITADEL_<SECTION>_<KEY>` / Gitea's `GITEA__<section>__<KEY>` via `additionalConfigFromEnvs`) — never placed directly in `values:` blocks, which would land in a plaintext ConfigMap or Helm release secret. Dawarich's chart wires secrets via plain `existingSecret` + fixed key names instead (`username`/`password` for Postgres, `redis-password`, `value` for the Rails key base) — same bring-your-own-secret philosophy, different chart-specific mechanism.
 
