@@ -1,3 +1,13 @@
+# Entrypoint-level HTTP->HTTPS redirect deliberately removed (2026-08-19).
+# It unconditionally redirected every request on the web entrypoint,
+# including cert-manager's ACME HTTP-01 challenge path - the challenge
+# itself got redirected to HTTPS before a valid cert existed to serve that
+# response, breaking renewal. Hasn't bitten zitadel-tls yet only because it
+# was issued before this redirect was added; the next automatic renewal
+# would have failed. Same root cause and same fix as EMK's Traefik hit for
+# Gitea's cert (see clusters/MEMORY.md) - removed there with no replacement
+# rather than a per-Ingress opt-in, and that's held up fine since, so doing
+# the same here for consistency instead of introducing new untested config.
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -5,11 +15,4 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
-    ports:
-      web:
-        http:
-          redirections:
-            entryPoint:
-              to: websecure
-              scheme: https
-              permanent: true
+    {}
