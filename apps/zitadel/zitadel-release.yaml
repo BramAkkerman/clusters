@@ -17,6 +17,29 @@ spec:
     remediation:
       retries: 3
   values:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 192Mi
+      limits:
+        cpu: 500m
+        memory: 384Mi
+    init:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 64Mi
+        limits:
+          cpu: 100m
+          memory: 128Mi
+    setup:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 64Mi
+        limits:
+          cpu: 100m
+          memory: 128Mi
     zitadel:
       masterkeySecretName: zitadel-masterkey   # created manually, see below
       configmapConfig:
