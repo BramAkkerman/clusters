@@ -1,0 +1,7 @@
+- [Don't auto-push](feedback_no_autopush.md) — commit/write code and stop; wait for explicit go-ahead before `git push`.
+- [Use claude-bot on Gitea](feedback_gitea_use_claude_bot.md) — git push/API against git.meneerak.nl as claude-bot, not the user's personal SSH key.
+- [claude-bot token setup](reference_claude_bot_tokens.md) — tokens are purpose-scoped and rotate; when auth fails, ask for a fresh token, don't hunt for the old value. Includes the exact working git-push syntax.
+- [oauth2-proxy cookie-secret must be URL-safe base64](feedback_oauth2proxy_cookie_secret_urlsafe.md) — plain `openssl rand -base64 32` can silently break; use `| tr -- '+/' '-_'`.
+- [Avoid disproportionate fixes](feedback_avoid_disproportionate_fixes.md) — don't add a volume/ConfigMap/sidecar just to fully fix something cosmetic; size the fix to the actual stakes.
+- [Public homepage security boundary](feedback_public_homepage_security_boundary.md) — meneerak.nl (public, no auth gate) never lists credential/security-adjacent apps; ops.meneerak.nl only for those.
+- [Cyso volume quota exhausted](project_cyso_volume_quota_blocked.md) — account-wide 15-volume Cinder cap hit 2026-08-25; uptime-kuma's PVC pending until user frees one up or raises quota.
