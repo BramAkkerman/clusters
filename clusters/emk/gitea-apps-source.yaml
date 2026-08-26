@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m0s
-  url: ssh://git@git.meneerak.nl/flux/apps.git
+  url: ssh://git@git.meneerak.nl/Ak/apps.git
   ref:
     branch: main
   secretRef:
