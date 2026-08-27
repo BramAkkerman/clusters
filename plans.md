@@ -56,11 +56,3 @@ tradeoff has already been considered once and punted on.
 - **Zitadel VM migration to a clean Talos box** - plan is written
   (`ZITADEL_MIGRATION.md`), execution is on the user, in progress as of
   2026-08-21.
-
-## Small hardening items
-
-- **qBittorrent: lock "Network Interface" to `tun0`** in its own Advanced
-  settings, on top of gluetun's killswitch - belt-and-suspenders so a
-  dropped tunnel means qBittorrent can't send traffic at all, rather than
-  relying solely on gluetun's firewall rules. Mentioned when the
-  Windscribe routing went in (2026-08-25), not yet done.
