@@ -23,7 +23,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./apps/dawarich
+  path: ./dawarich
   prune: true
   dependsOn:
     - name: cert-manager-config
@@ -42,7 +42,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./apps/wireguard
+  path: ./wireguard
   prune: true
   dependsOn:
     - name: cert-manager-config
@@ -60,7 +60,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./apps/homepage
+  path: ./homepage
   prune: true
   dependsOn:
     - name: cert-manager-config
@@ -78,7 +78,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./apps/freegamesbot
+  path: ./freegamesbot
   prune: true
   sourceRef:
     kind: GitRepository
@@ -94,7 +94,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./apps/media
+  path: ./media
   prune: true
   dependsOn:
     - name: cert-manager-config
@@ -112,7 +112,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./apps/filestash
+  path: ./filestash
   prune: true
   dependsOn:
     - name: cert-manager-config
@@ -130,7 +130,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./apps/jellyseerr
+  path: ./jellyseerr
   prune: true
   dependsOn:
     - name: cert-manager-config
@@ -148,7 +148,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./apps/cividle
+  path: ./cividle
   prune: true
   dependsOn:
     - name: cert-manager-config
@@ -166,7 +166,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./apps/yopass
+  path: ./yopass
   prune: true
   dependsOn:
     - name: cert-manager-config
@@ -184,7 +184,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./apps/vaultwarden
+  path: ./vaultwarden
   prune: true
   dependsOn:
     - name: cert-manager-config
@@ -202,7 +202,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./apps/uptime-kuma
+  path: ./uptime-kuma
   prune: true
   dependsOn:
     - name: cert-manager-config
