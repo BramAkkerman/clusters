@@ -45,6 +45,26 @@ tradeoff has already been considered once and punted on.
   identify which ones actually hold irreplaceable state the way
   Vaultwarden and Dawarich's location history do.
 
+## oauth2-proxy cookie scoping
+
+Every oauth2-proxy in this project (filestash, jellyseerr, cividle,
+vaultwarden, uptime-kuma, media, and now stremio - the one exception)
+sets `OAUTH2_PROXY_COOKIE_DOMAINS: .meneerak.nl` (domain-wide) instead of
+scoping to its own host. Since each app already has its own dedicated
+Zitadel client + unique cookie name, this provides no actual shared-login
+benefit - it just means the browser sends *every* app's session cookie
+on every request to *any* subdomain, growing every time a new app is
+added. Hit a real "Request Header Or Cookie Too Large" error on stremio
+(2026-09-07, see `apps/stremio/README.md`) once 7 apps' cookies stacked
+up against its bundled nginx's stricter header-size limits - fixed for
+that one app by scoping it to `stremio.meneerak.nl` specifically. The
+other 6 apps are equally exposed to this, just haven't tripped it yet.
+Retrofitting all of them to host-specific cookie domains is the real
+fix - not done broadly yet since changing cookie domain invalidates
+existing sessions on each app touched, so it's a deliberate one-at-a-time
+or coordinated change, not something to slip in as a side effect of
+something else.
+
 ## Infrastructure consistency
 
 - **Migrate `zitadel-vm`'s Flux `GitRepository` source from GitHub to
